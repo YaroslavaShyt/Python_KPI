@@ -14,13 +14,13 @@ def calculation(x, operator, y):
                 print(x / y)
             except ZeroDivisionError:
                 print('Division by zero error!')
-        case other:
+        case _:
             raise Exception('no operator found')
 
 
 def main():
-    parser = argparse.ArgumentParser(exit_on_error=False) # Initialize the parser
-    parser.add_argument('x', type=float)                  # Add parameters positional/optional
+    parser = argparse.ArgumentParser(exit_on_error=False)  # Initialize the parser
+    parser.add_argument('x', type=float)                   # Add parameters positional/optional
     parser.add_argument('operator')
     parser.add_argument('y', type=float)
     try:
@@ -31,4 +31,3 @@ def main():
 
 
 main()  # Run code
-
