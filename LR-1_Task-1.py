@@ -30,4 +30,5 @@ def main():
         print('Something went wrong:', ex)
 
 
-main()  # Run code
+if __name__ == "__main__":
+    main()
