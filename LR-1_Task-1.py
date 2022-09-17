@@ -13,7 +13,7 @@ def calculation(x, operator, y):
             try:
                 print(x / y)
             except ZeroDivisionError:
-                print('Division by zero error!')
+                raise ZeroDivisionError('Division by zero error!')
         case _:
             raise Exception('no operator found')
 
@@ -27,7 +27,7 @@ def main():
         args = parser.parse_args()                        # Parse the arguments
         calculation(args.x, args.operator, args.y)
     except Exception as ex:
-        print('Something went wrong. Check values or operator:', ex)
+        print('Something went wrong:', ex)
 
 
 main()  # Run code
