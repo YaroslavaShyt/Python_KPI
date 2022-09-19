@@ -1,11 +1,10 @@
 import argparse
 
 
-def optimal_weight(W,  w):
+def count_weight(W,  w):
     w = [0] + w
     items = len(w)
     capacity = W + 1
-    # Create a weight matrix and write in initial values.
     weights = [[0 for _ in range(items)] for _ in range(capacity)]
     for i in range(1, items):
         for j in range(1, capacity):
@@ -18,7 +17,7 @@ def optimal_weight(W,  w):
 
 
 def main():
-    parser = argparse.ArgumentParser(exit_on_error=False)  # Initialize the parser
+    parser = argparse.ArgumentParser(exit_on_error=False)
     parser.add_argument('-W', '--capacity', type=int, required=True)
     parser.add_argument('-w', '--weights', nargs='+', type=int, required=True)
     parser.add_argument('-n', '--bars_number', type=int, required=True)
@@ -27,7 +26,7 @@ def main():
         if len(args.weights) != args.bars_number != len(set(args.weights)):
             print('Wrong data!')
         else:
-            print(optimal_weight(args.capacity, args.weights))
+            print(count_weight(args.capacity, args.weights))
     except ValueError:
         raise ValueError('Wrong values!')
     except TypeError:

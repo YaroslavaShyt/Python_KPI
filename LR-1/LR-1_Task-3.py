@@ -3,17 +3,15 @@ import argparse
 
 def check_values(formula):
     val = '0123456789+-'
-    for sym in formula:
-        if sym not in val:
-            return False
+    if not all(sym in val for sym in formula):
+        return False
     return True
 
 
 def check_signs(formula):
     sign = ['++', '+-', '-+', '--']
-    for s in sign:
-        if s in formula:
-            return False
+    if not all(s in sign for s in formula):
+        return False
     return True
 
 
@@ -25,7 +23,6 @@ def main():
         args = parser.parse_args()   # Parse the arguments
         if check_values(args.formula) and check_signs(args.formula):
             print('Result = (', flag, ',', eval(args.formula), ')')
-
         else:
             print('Result = (', False, ', None)')
     except Exception as ex:
