@@ -17,10 +17,10 @@ def check_signs(formula):
 
 def main():
     flag = True
-    parser = argparse.ArgumentParser(exit_on_error=False)  # Initialize the parser
+    parser = argparse.ArgumentParser(exit_on_error=False)
     parser.add_argument('formula')
     try:
-        args = parser.parse_args()   # Parse the arguments
+        args = parser.parse_args()
         if check_values(args.formula) and check_signs(args.formula):
             print('Result = (', flag, ',', eval(args.formula), ')')
         else:
