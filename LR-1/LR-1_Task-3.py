@@ -10,19 +10,18 @@ def check_values(formula):
 
 def check_signs(formula):
     sign = ['++', '+-', '-+', '--']
-    if not all(s in sign for s in formula):
+    if any(s in formula for s in sign):
         return False
     return True
 
 
 def main():
-    flag = True
     parser = argparse.ArgumentParser(exit_on_error=False)
     parser.add_argument('formula')
     try:
         args = parser.parse_args()
         if check_values(args.formula) and check_signs(args.formula):
-            print('Result = (', flag, ',', eval(args.formula), ')')
+            print('Result = (', True, ',', eval(args.formula), ')')
         else:
             print('Result = (', False, ', None)')
     except Exception as ex:
