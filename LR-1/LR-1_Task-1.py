@@ -1,35 +1,27 @@
 import argparse
+import operator
 
 
-def calculation(x, operator, y):
-    match operator:
-        case '+':
-            print(x + y)
-        case '-':
-            print(x - y)
-        case '*':
-            print(x * y)
-        case '/':
-            try:
-                print(x / y)
-            except ZeroDivisionError:
-                raise ZeroDivisionError('Division by zero error!')
-        case _:
-            raise Exception('no operator found')
+ops = {'+': operator.add,
+       '-': operator.sub,
+       '*': operator.mul,
+       '/': operator.truediv}
 
 
 def main():
-    parser = argparse.ArgumentParser(exit_on_error=False)  # Initialize the parser
-    parser.add_argument('x', type=float)                   # Add parameters positional/optional
-    parser.add_argument('operator')
-    parser.add_argument('y', type=float)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('x')
+    parser.add_argument('op')
+    parser.add_argument('y')
+    args = parser.parse_args()
     try:
-        args = parser.parse_args()                        # Parse the arguments
-        calculation(args.x, args.operator, args.y)
-    except Exception as ex:
-        print('Something went wrong:', ex)
+        print(ops[args.op](float(args.x), float(args.y)))
+    except ZeroDivisionError:
+        print('Error: do not divide by 0.')
+    except KeyError:
+        print('Error: you chose wrong operator.')
+    except ValueError:
+        print('Error: incorrect operand.')
 
 
-if __name__ == "__main__":
-    main()
-
+main()

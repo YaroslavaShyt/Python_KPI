@@ -1,35 +1,28 @@
 import argparse
 
 
-def check_values(formula):
+def valid_formula(formula):
     val = '0123456789+-'
-    if not all(sym in val for sym in formula):
-        return False
-    return True
-
-
-def check_signs(formula):
     sign = ['++', '+-', '-+', '--']
-    if any(s in formula for s in sign):
+    incorrect_val = any(s in formula for s in sign)
+    incorrect_op = not all(sym in val for sym in formula)
+    if incorrect_val or incorrect_op:
         return False
     return True
 
 
 def main():
-    parser = argparse.ArgumentParser(exit_on_error=False)
+    parser = argparse.ArgumentParser()
     parser.add_argument('formula')
-    try:
-        args = parser.parse_args()
-        if check_values(args.formula) and check_signs(args.formula):
-            print('Result = (', True, ',', eval(args.formula), ')')
-        else:
-            print('Result = (', False, ', None)')
-    except Exception as ex:
-        print('Something went wrong:', ex)
+    args = parser.parse_args()
+    if valid_formula(args.formula):
+        try:
+            print(valid_formula(args.formula), eval(args.formula))
+        except SyntaxError:
+            print(valid_formula(args.formula), None)
+    else:
+        print(valid_formula(args.formula), None)
 
 
-if __name__ == "__main__":
-    try:
-        main()
-    except Exception as ex:
-        print("Something wrong:", ex)
+main()
+
