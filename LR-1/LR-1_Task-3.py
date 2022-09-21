@@ -4,8 +4,8 @@ import argparse
 def valid_formula(formula):
     val = '0123456789+-'
     sign = ['++', '+-', '-+', '--']
-    incorrect_val = any(s in formula for s in sign)
-    incorrect_op = not all(sym in val for sym in formula)
+    incorrect_val = not all(sym in val for sym in formula)
+    incorrect_op = any(s in formula for s in sign)
     if incorrect_val or incorrect_op:
         return False
     return True
