@@ -1,60 +1,72 @@
 class Product:
     def __init__(self, price=0, description='', dimention=''):
-        self.__price = price
-        self.__description = description
-        self.__dimention = dimention
+        self.price = self.set_price(price)
+        self.description = description
+        self.dimention = dimention
 
-    @property
-    def price(self):
-        return self.__price
+    def get_price(self):
+        return self.price
 
-    @price.setter
-    def price(self, new_price):
-        if new_price > 0:
-            self.__price = new_price
+    def set_price(self, new_price):
+        if isinstance(new_price, int) and new_price > 0:
+            self.price = new_price
+            return self.price
         else:
-            print('Incorrect value!')
+            raise TypeError('Incorrect value for price!')
 
     def show_product(self):
-        return f'{self.__description} {self.__dimention} {self.__price}'
+        return f'{self.description} size:{self.dimention} price:{self.price}'
 
 
 class Customer:
     def __init__(self, surn='', name='', patr='', phone=''):
-        self.__surn = surn
-        self.__name = name
-        self.__patr = patr
-        self.__phone = phone
+        self.surn = surn
+        self.name = name
+        self.patr = patr
+        self.phone = phone
 
     def __str__(self):
-        return f'{self.__surn} {self.__name} {self.__patr} {self.__phone}'
+        return f'{self.surn} {self.name} {self.patr} {self.phone}'
 
 
 class Order:
-    def __init__(self, custom, **product):
-        self.__custom = custom
-        self.__product = product
+    def __init__(self, **product):
+        self.products = {}
+        for i in product:
+            self.add_product(product[i])
 
-    def show_order(self):
-        print(self.__custom.__str__())
-        for i in self.__product:
-            print(self.__product[i].show_product())
+    def add_product(self, new_product):
+        if new_product.show_product() in self.products:
+            self.products[new_product.show_product()][0] += 1
+            self.products[new_product.show_product()][1] += new_product.get_price()
+        else:
+            self.products.update({new_product.show_product(): [1, new_product.get_price()]})
 
-    def total_cost(self):
+    def count_total(self):
         total = 0
-        for i in self.__product:
-            total += float(self.__product[i].price)
+        for i in self.products:
+            total += self.products[i][1]
         return total
 
 
+def show_order(c, o):
+    print('Customer:', c.__str__())
+    for i in o.products:
+        print(i, '*', o.products[i][0], '=', o.products[i][1])
+
+
 def main():
-    c = Customer('Petrenko', 'Kateryna', 'Vitalivna', '098765432')
-    g1 = Product(144, 'Book', '25x15')
-    g2 = Product(123, 'Cactus', '20x10')
-    g3 = Product(322, 'Rubbers', '2x3')
-    o = Order(c, first_p=g1, second_p=g2, third_p=g3)
-    o.show_order()
-    print('Total:', o.total_cost())
+    try:
+        c = Customer('Petrenko', 'Kateryna', 'Vitalivna', '098765432')
+        g1 = Product(144, 'Book', '25x15')
+        g2 = Product(123, 'Cactus', '20x10')
+        g3 = Product(322, 'Rubbers', '2x3')
+        g4 = Product(322, 'Rubbers', '2x3')
+        o = Order(first_p=g1, second_p=g2, third_p=g3, fourth_p=g4)
+        show_order(c, o)
+        print('Total:', o.count_total())
+    except Exception as ex:
+        print(ex)
 
 
 main()
