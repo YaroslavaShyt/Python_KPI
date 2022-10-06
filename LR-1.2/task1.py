@@ -21,9 +21,11 @@ class Rectangle:
 
     @staticmethod
     def check_value(num):
-        if isinstance(num, (float, int)) and 0.0 < num <= 20.0:
-            return True
-        return False
+        if not isinstance(num, (float, int)):
+            raise TypeError('Incorrect value!')
+        elif num <= 0 or num > 20:
+            raise ValueError('Values must belong (0; 20)!')
+        return True
 
     def area(self):
         return self.length * self.width
@@ -33,15 +35,15 @@ class Rectangle:
 
 
 def main():
-    rec = Rectangle()
-    print('w=', rec.get_width(), 'l=', rec.get_length())
-    rec.set_width(12.0)
-    rec.set_length(4.0)
-    print('w=', rec.get_width(), 'l=', rec.get_length())
-    rec.set_width('1')
-    rec.set_length('mom')
-    print('w=', rec.get_width(), 'l=', rec.get_length())
-    print('S=', rec.area(), 'P=', rec.perimeter())
+    try:
+        rec = Rectangle()
+        print('w=', rec.get_width(), 'l=', rec.get_length())
+        rec.set_width(12.0)
+        rec.set_length(4.0)
+        print('w=', rec.get_width(), 'l=', rec.get_length())
+        print('S=', rec.area(), 'P=', rec.perimeter())
+    except Exception as ex:
+        print(ex)
 
 
 main()

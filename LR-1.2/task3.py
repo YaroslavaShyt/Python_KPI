@@ -1,21 +1,29 @@
 class Product:
     def __init__(self, price=0, description='', dimention=''):
         self.price = self.set_price(price)
-        self.description = description
+        self.description = self.set_descr(description)
         self.dimention = dimention
 
     def get_price(self):
         return self.price
 
     def set_price(self, new_price):
-        if isinstance(new_price, int) and new_price > 0:
+        if not isinstance(new_price, (int, float)):
+            raise TypeError('Incorrect value for price!')
+        elif new_price <= 0:
+            raise ValueError('Price must be above 0!')
+        else:
             self.price = new_price
             return self.price
-        else:
-            raise TypeError('Incorrect value for price!')
+
+    def set_descr(self, new_desc):
+        if not new_desc:
+            raise ValueError('Add description!')
+        self.description = new_desc
+        return self.description
 
     def show_product(self):
-        return f'{self.description} size:{self.dimention} price:{self.price}'
+        return f'{self.description} - price: {self.price}'
 
 
 class Customer:
@@ -30,10 +38,11 @@ class Customer:
 
 
 class Order:
-    def __init__(self, **product):
+    def __init__(self, product=None):
         self.products = {}
+        self.total = 0
         for i in product:
-            self.add_product(product[i])
+            self.add_product(i)
 
     def add_product(self, new_product):
         if new_product.show_product() in self.products:
@@ -43,28 +52,26 @@ class Order:
             self.products.update({new_product.show_product(): [1, new_product.get_price()]})
 
     def count_total(self):
-        total = 0
         for i in self.products:
-            total += self.products[i][1]
-        return total
+            self.total += self.products[i][1]
+        return self.total
 
-
-def show_order(c, o):
-    print('Customer:', c.__str__())
-    for i in o.products:
-        print(i, '*', o.products[i][0], '=', o.products[i][1])
+    def show_order(self, customer):
+        print('Customer:', customer.__str__())
+        for i in self.products:
+            print(i, '*', self.products[i][0], '=', self.products[i][1])
+        print('Total', self.count_total())
 
 
 def main():
     try:
         c = Customer('Petrenko', 'Kateryna', 'Vitalivna', '098765432')
-        g1 = Product(144, 'Book', '25x15')
-        g2 = Product(123, 'Cactus', '20x10')
-        g3 = Product(322, 'Rubbers', '2x3')
-        g4 = Product(322, 'Rubbers', '2x3')
-        o = Order(first_p=g1, second_p=g2, third_p=g3, fourth_p=g4)
-        show_order(c, o)
-        print('Total:', o.count_total())
+        goods = [Product(144, 'Book', '25x15'),
+                 Product(123, 'Cactus', '20x10'),
+                 Product(322, 'Rubbers', '2x3'),
+                 Product(322, 'Rubbers', '2x3')]
+        o = Order(goods)
+        o.show_order(c)
     except Exception as ex:
         print(ex)
 

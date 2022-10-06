@@ -13,24 +13,19 @@ class Rational:
         return self.__den
 
     def set_num(self, new_num):
-        if self.check_values(new_num):
+        if isinstance(new_num, int):
             self.__num = new_num
             return self.__num
-        else:
-            raise TypeError('Incorrect value for numerator!')
+        raise TypeError('Incorrect value for numerator!')
 
     def set_den(self, new_den):
-        if self.check_values(new_den) and new_den:
+        if new_den == 0:
+            raise ZeroDivisionError('Denominator cannot be 0!')
+        elif isinstance(new_den, int):
             self.__den = new_den
             return self.__den
         else:
             raise TypeError('Incorrect value for denominator!')
-
-    @staticmethod
-    def check_values(val):
-        if isinstance(val, int):
-            return True
-        return False
 
     def __str__(self):
         if self.__den == 1:
