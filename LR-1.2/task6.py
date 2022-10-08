@@ -15,11 +15,11 @@ class BinaryTree:
             node.right = self.insert(node.right, data)
         return node
 
-    def inorder(self, r):
-        if r:
-            self.inorder(r.left)
-            print(r.data)
-            self.inorder(r.right)
+    def inorder(self, root):
+        if root:
+            self.inorder(root.left)
+            print(root.data)
+            self.inorder(root.right)
 
 
 class Counter:
