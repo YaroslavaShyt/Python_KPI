@@ -1,32 +1,48 @@
+import re
+
+
 class File:
     def __init__(self, name):
-        # check if file exists
-        self.__name = name
-        self.__sentence = 0
-        self.__words = 0
-        self.__chars = 0
+        self.name = name
+        self.words = 0
+        self.sentences = 0
+        self.symbols = 0
+        try:
+            data = open(self.name, 'r')
+        except FileNotFoundError:
+            raise FileNotFoundError('Cannot find file!')
+        except IOError:
+            raise IOError('Cannot open file!')
+        data.close()
 
-    def start_count(self):
-        with open(self.__name, 'r') as f:
-            for line in f:
-                # words may be written a,b,c
-                w = line.split()
-                # the line ends with ! ... ?
-                self.__sentence += line.count('.')
-                self.__words += len(w)
-                self.__chars += len(line.replace(' ', ''))
+    def count_words(self):
+        data = open(self.name, 'r')
+        for line in data:
+            self.words += len(re.findall(r'[A-Za-z]+', line))
+        data.close()
+        return self.words
 
-    def show_result(self):
-        print('Characters:', self.__chars)
-        print('Words:', self.__words)
-        print('Sentences:', self.__sentence)
+    def count_sentences(self):
+        data = open(self.name, 'r')
+        for line in data:
+            self.sentences += len(re.findall(r'\w+[.?!]+', line))
+        data.close()
+        return self.sentences
+
+    def count_symbols(self):
+        data = open(self.name, 'r')
+        for line in data:
+            self.symbols += len(line) - line.count(' ') - line.count('\n')
+        data.close()
+        return self.symbols
+
+    def __str__(self):
+        return f'Characters: {self.count_symbols()}\nWords: {self.count_words()}\nSentences: {self.count_sentences()}'
 
 
 def main():
-    # open in a class
     f = File(r'C:\Users\User\Desktop\text.txt')
-    f.start_count()
-    f.show_result()
+    print(f.__str__())
 
 
 main()

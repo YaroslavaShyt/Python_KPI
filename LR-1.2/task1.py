@@ -1,30 +1,32 @@
 class Rectangle:
     def __init__(self, length=1, width=1):
-        self.width = self.set_width(width)
-        self.length = self.set_length(length)
+        self.width = width
+        self.length = length
 
-    def get_length(self):
-        return self.length
+    @property
+    def length(self):
+        return self.__length
 
-    def get_width(self):
-        return self.width
+    @property
+    def width(self):
+        return self.__width
 
-    def set_length(self, new_length):
+    @length.setter
+    def length(self, new_length):
         if self.check_value(new_length):
-            self.length = new_length
-        return self.length
+            self.__length = new_length
 
-    def set_width(self, new_width):
+    @width.setter
+    def width(self, new_width):
         if self.check_value(new_width):
-            self.width = new_width
-        return self.width
+            self.__width = new_width
 
     @staticmethod
     def check_value(num):
-        if not isinstance(num, (float, int)):
+        if not isinstance(num, float | int):
             raise TypeError('Incorrect value!')
         elif num <= 0 or num > 20:
-            raise ValueError('Values must belong (0; 20)!')
+            raise ValueError('Values must belong (0;20)!')
         return True
 
     def area(self):
@@ -37,10 +39,9 @@ class Rectangle:
 def main():
     try:
         rec = Rectangle()
-        print('w=', rec.get_width(), 'l=', rec.get_length())
-        rec.set_width(12.0)
-        rec.set_length(4.0)
-        print('w=', rec.get_width(), 'l=', rec.get_length())
+        print('w=', rec.width, 'l=', rec.length)
+        rec.width, rec.length = 12.0, 4.0
+        print('w=', rec.width, 'l=', rec.length)
         print('S=', rec.area(), 'P=', rec.perimeter())
     except Exception as ex:
         print(ex)

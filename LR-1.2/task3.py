@@ -1,26 +1,20 @@
 class Product:
     def __init__(self, price=0, description='', dimention=''):
-        self.price = self.set_price(price)
-        self.description = self.set_descr(description)
+        self.price = price
+        self.description = description
         self.dimention = dimention
 
-    def get_price(self):
-        return self.price
+    @property
+    def price(self):
+        return self.__price
 
-    def set_price(self, new_price):
+    @price.setter
+    def price(self, new_price):
         if not isinstance(new_price, (int, float)):
             raise TypeError('Incorrect value for price!')
         elif new_price <= 0:
             raise ValueError('Price must be above 0!')
-        else:
-            self.price = new_price
-            return self.price
-
-    def set_descr(self, new_desc):
-        if not new_desc:
-            raise ValueError('Add description!')
-        self.description = new_desc
-        return self.description
+        self.__price = new_price
 
     def show_product(self):
         return f'{self.description} - price: {self.price}'
