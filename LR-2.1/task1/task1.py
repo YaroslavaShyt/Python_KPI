@@ -2,59 +2,66 @@ import re
 
 
 class Customer:
-    def __int__(self, surn, name, phone, email):
-        self.surname = surn
+    def __init__(self, name, surname, phone, email):
         self.name = name
+        self.surname = surname
         self.phone = phone
         self.email = email
-
-    @property
-    def surname(self):
-        return self.__surname
-
-    @surname.setter
-    def surname(self, new_surn):
-        if not isinstance(new_surn, str):
-            raise TypeError('Incorrect type for surname!')
-        if not new_surn:
-            raise ValueError('Surname cannot be empty!')
-        self.__surname = new_surn
 
     @property
     def name(self):
         return self.__name
 
     @name.setter
-    def name(self, new_name):
-        if not isinstance(new_name, str):
+    def name(self, new_n):
+        if not isinstance(new_n, str):
+            raise TypeError('Incorrect type for name!')
+        if re.search('[^A-Za-z\'-]', new_n):
+            raise ValueError('Incorrect character in name!')
+        self.__name = new_n
+
+    @property
+    def surname(self):
+        return self.__surname
+
+    @surname.setter
+    def surname(self, new_s):
+        if not isinstance(new_s, str):
             raise TypeError('Incorrect type for surname!')
-        if not new_name:
-            raise ValueError('Surname cannot be empty!')
-        self.__name = new_name
+        if re.search('[^A-Za-z\'-]', new_s):
+            raise ValueError('Incorrect character in surname!')
+        self.__surname = new_s
 
     @property
     def phone(self):
         return self.__phone
-# переробити
+
     @phone.setter
-    def phone(self, new_phone):
-        for i in new_phone:
-            if not isinstance(i, int):
-                raise TypeError('Incorrect type for telephone number!')
-        self.__phone = new_phone
+    def phone(self, new_ph):
+        if not isinstance(new_ph, str):
+            raise TypeError('Incorrect type for phone number!')
+        if re.search('[^+0-9]', new_ph):
+            raise ValueError('Incorrect character for phone number!')
+        self.__phone = new_ph
 
     @property
     def email(self):
         return self.__email
 
     @email.setter
-    def email(self, new_email):
-        if not re.search(r'\S+@\S+.\S+'):
-            raise ValueError('Incorrect email address!')
-        self.__email = new_email
+    def email(self, new_e):
+        if not isinstance(new_e, str):
+            raise TypeError("Incorrect type for email!")
+        if not re.search(r'[\S+@a-z.a-z]', new_e):
+            raise ValueError("Invalid email!")
+        self.__email = new_e
 
     def __str__(self):
-        return f'Surname:{self.surname}\nName:{self.name}\nTelephone number:{self.phone}\nEmail:{self.email}'
+        return f'--------CUSTOMER--------\n' \
+               f'Name: {self.name}\n' \
+               f'Surname: {self.surname}\n' \
+               f'Phone number: {self.phone}\n' \
+               f'Email: {self.email}'
 
 
 class RegularTicket:
@@ -79,3 +86,7 @@ class LateTicket(RegularTicket):
         return self.price / 2
 
 
+try:
+    c = Customer('Petro', 'Petrenko', '098765432', 'petpet@gmail.com')
+except Exception as ex:
+    print(ex)
