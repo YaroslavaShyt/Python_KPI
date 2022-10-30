@@ -1,0 +1,55 @@
+{
+  "events": {
+
+      "1": {
+        "name": "Testing summit 2022",
+        "specialization": "testing",
+        "price": 200,
+        "time": "15:00",
+        "date": "05.11.2022"
+      },
+      "2": {
+        "name": "UI for beginners",
+        "specialization": "ui developer",
+        "price": 500,
+        "time": "17:00",
+        "date": "09.11.2022"
+      },
+       "3": {
+         "name": "Informal about computers and code",
+         "specialization": ["testing", "software engineering", "data science"],
+         "price": 340,
+         "time": "11:00",
+         "date": "11.11.2022"
+       },
+      "4": {
+         "name": "Data science for seniors",
+         "specialization": "data science",
+         "price": 1000,
+         "time": "12:00",
+         "date": "16.12.2022"
+      },
+      "5": {
+         "name": "Get back to work after holidays",
+         "specialization": "all",
+         "price": 85,
+         "time": "19:00",
+         "date": "05.01.2023"
+      },
+      "6": {
+         "name": "SQL in 2023",
+         "specialization": ["web", "software engineering"],
+         "price": 350,
+         "time": "18:00",
+         "date": "16.02.2023"
+        },
+      "7": {
+         "name": "Change the specialization: how?",
+         "specialization": "all",
+         "price": 250,
+         "time":  "17:00",
+         "date": "20.02.2023"
+        }
+      }
+
+}
