@@ -113,7 +113,7 @@ class Order:
         self.price = 0
         self.choice = 1
         self.pizzas = {0: MondayPizza(), 1: TuesdayPizza(), 2: WednesdayPizza(), 3: ThursdayPizza(),
-                       4: FridayPizza(), 5: SaturdayPizza(), 6: SundayPizza}
+                       4: FridayPizza(), 5: SaturdayPizza(), 6: SundayPizza()}
         self.day = datetime.datetime.now().weekday()
         self.p = self.pizzas[self.day]
         self.food = {}
@@ -122,25 +122,32 @@ class Order:
 
     def make_order(self):
         print("Hello! Your pizza today:\n", self.p)
-        print("Would you like add ingredients? -- Y(1)|N(0)")
-        self.choice = int(input())
-        if self.choice:
-            self.add_ingredients()
-        return f"---Total---\n"\
+        self.choice = input("Would you like add ingredients? -- Y(1)|N(0): ")
+        while True:
+            self.choice = input("Would you like add ingredients? -- Y(1)|N(0): ")
+            if int(self.choice) == 1:
+                self.add_ingredients()
+            if int(self.choice) == 0:
+                break
+        return f"---Order---\n" \
+               f"{self.p}\n" \
+               f"---Total---\n"\
                f"{self.count_total()}"
 
     def add_ingredients(self):
         with open('pizzas.json', 'r') as p:
             data = json.load(p)
-        print("Choose the option: ")
+        self.show_ingredients(data)
+        option = input("Choose the option: ")
+        if option not in data["ingredients"] or list(data["ingredients"][option].keys())[0] not in self.food:
+            print('No such option.')
+        else:
+            self.food[list(list(data["ingredients"].values())[int(option) - 1].keys())[0]] += 1
+
+    def show_ingredients(self, data):
         for i in range(1, len(data["ingredients"]) + 1):
             if list(list(data["ingredients"].values())[i - 1].keys())[0] in list(self.food.keys()):
                 print(i, data["ingredients"][str(i)])
-        while self.choice:
-            option = int(input())
-            self.food[list(list(data["ingredients"].values())[option-1].keys())[0]] += 1
-            print("Add something more? -- Y(1)|N(0)")
-            self.choice = int(input())
 
     def count_total(self):
         total = 0
@@ -153,11 +160,10 @@ class Order:
         return total
 
 
-"""if __name__ == "__main__":
-    try:"""
-c = Customer('Mary', 'Smith', '0987654321')
-o = Order(c)
-print(o.make_order())
-"""    except Exception as ex:
-        print(ex)"""
+try:
+    c = Customer('Mary', 'Smith', '0987654321')
+    o = Order(c)
+    print(o.make_order())
+except Exception as ex:
+    print(ex)
 
