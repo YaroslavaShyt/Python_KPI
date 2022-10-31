@@ -2,6 +2,8 @@ import re
 import json
 from datetime import datetime
 
+DISCOUNT = {"STUDENT_D": 0.5, "ADVANCED_D": 0.6, "LATE_D": 1.1}
+
 
 class CustomerInfo:
     def __init__(self, name, surname, phone, email, is_student):
@@ -138,9 +140,9 @@ class Event:
     @event_date.setter
     def event_date(self, new_d):
         if not isinstance(new_d, str):
-            raise TypeError('Incorrect type for date and time!')
-        if re.search(r'[^0-9.:\s]', new_d):
-            raise ValueError('Incorrect chars in date or time!')
+            raise TypeError('Incorrect type for date!')
+        if re.search(r'[^0-9.\s]', new_d):
+            raise ValueError('Incorrect chars in date!')
         self.__event_date = new_d
 
     @property
@@ -170,21 +172,56 @@ class RegularTicket:
         self.ticket_num = num
         self.unique_id = unique
         self.unique_cod = self.event.id_event + self.unique_id + str(self.ticket_num)
-        print(self.unique_id)
         self.ticket_price = self.event.ticket_price
         self.write_to_report()
 
+    @property
+    def ticket_num(self):
+        return self.__ticket_num
+
+    @ticket_num.setter
+    def ticket_num(self, new_n):
+        if not isinstance(new_n, int):
+            raise TypeError('Incorrect type for ticket number!')
+        if new_n < 1:
+            raise ValueError('Incorrect value for ticket number!')
+        self.__ticket_num = new_n
+
+    @property
+    def unique_id(self):
+        return self.__unique_id
+
+    @unique_id.setter
+    def unique_id(self, new_id):
+        with open('eventsinfo.json', 'r') as e:
+            data = json.load(e)
+        if not isinstance(new_id, str):
+            raise TypeError('Incorrect type for unique id!')
+        if new_id not in data["ticket-types"]:
+            raise ValueError('Unique id does not exist!')
+        self.__unique_id = new_id
+
     def write_to_report(self):
-        with open('ordersreport.json', 'r') as f:
-            k = json.load(f)
-            k["ticket"][self.unique_cod] = {}
-            k["ticket"][self.unique_cod]["name"] = self.event.event_name
-            k["ticket"][self.unique_cod]["price"] = self.ticket_price
-            k["ticket"][self.unique_cod]["date"] = self.event.event_date
-            k["ticket"][self.unique_cod]["time"] = self.event.event_time
-            k["ticket"][self.unique_cod]["customer"] = self.customer.__str__()
-        with open('ordersreport.json', 'w') as f:
-            json.dump(k, f, indent=4)
+        with open('ordersreport.json', 'r') as o:
+            data = json.load(o)
+            data["ticket"][self.unique_cod] = {}
+            data["ticket"][self.unique_cod]["name"] = self.event.event_name
+            data["ticket"][self.unique_cod]["price"] = self.ticket_price
+            data["ticket"][self.unique_cod]["date"] = self.event.event_date
+            data["ticket"][self.unique_cod]["time"] = self.event.event_time
+            data["ticket"][self.unique_cod]["customer"] = self.customer.__str__()
+        with open('ordersreport.json', 'w') as o:
+            json.dump(data, o, indent=4)
+
+    @property
+    def event(self):
+        return self.__event
+
+    @event.setter
+    def event(self, new_e):
+        if not isinstance(new_e, object):
+            raise TypeError('Incorrect type for event!')
+        self.__event = new_e
 
     @property
     def customer(self):
@@ -206,8 +243,7 @@ class RegularTicket:
 
 
 class StudentTicket(RegularTicket):
-    def __init__(self, event, customer, num, unique='ST', discount=0.5):
-        self.discount = discount
+    def __init__(self, event, customer, num, unique='ST'):
         super().__init__(event, customer, num, unique)
 
     @property
@@ -220,12 +256,11 @@ class StudentTicket(RegularTicket):
             raise TypeError('Incorrect type for price!')
         if new_p < 0:
             raise ValueError('Price cannot be less 0')
-        self.__ticket_price = round(new_p * self.discount, 2)
+        self.__ticket_price = round(new_p * DISCOUNT["STUDENT_D"], 2)
 
 
 class AdvancedTicket(RegularTicket):
-    def __init__(self, event, customer, num, unique='AT', discount=0.6):
-        self.discount = discount
+    def __init__(self, event, customer, num, unique='AT'):
         super().__init__(event, customer, num, unique)
 
     @property
@@ -238,12 +273,11 @@ class AdvancedTicket(RegularTicket):
             raise TypeError('Incorrect type for price!')
         if new_p < 0:
             raise ValueError('Price cannot be less 0')
-        self.__ticket_price = round(new_p * self.discount, 2)
+        self.__ticket_price = round(new_p * DISCOUNT["ADVANCED_D"], 2)
 
 
 class LateTicket(RegularTicket):
-    def __init__(self, event, customer, num, unique='LT', discount=1.1):
-        self.discount = discount
+    def __init__(self, event, customer, num, unique='LT'):
         super().__init__(event, customer, num, unique)
 
     @property
@@ -256,7 +290,7 @@ class LateTicket(RegularTicket):
             raise TypeError('Incorrect type for price!')
         if new_p < 0:
             raise ValueError('Price cannot be less 0')
-        self.__ticket_price = round(new_p * self.discount, 2)
+        self.__ticket_price = round(new_p * DISCOUNT["LATE_D"], 2)
 
 
 class MakeOrder:
@@ -290,23 +324,23 @@ class MakeOrder:
     def buy_tickets(self):
         with open('eventsinfo.json', 'r') as f:
             data = json.load(f)
-        choice = 1,
-        while choice:
-            condition = 1
-            while condition:
-                id = int(input('Enter id of chosen event: '))
-                if str(id) in data["events"]:
-                    condition = 0
+        condition = 1
+        while condition:
+            while True:
+                id_event = int(input('Enter id of chosen event: '))
+                if str(id_event) in data["events"]:
+                    break
                 else:
                     print('Event does not exist!')
-            self.order_list.append(str(id))
-            condition = 1
-            while condition:
+            self.order_list.append(str(id_event))
+            while True:
                 choice = int(input('Add more/quit? - 1/0: '))
                 if not isinstance(choice, int) or choice < 0 or choice > 1:
                     print('Incorrect user input for choice!')
                 else:
-                    condition = 0
+                    if not choice:
+                        condition = 0
+                    break
 
     def define_ticket_type(self):
         with open('orders.json', 'r') as o:
@@ -369,10 +403,13 @@ class MakeOrder:
         return f'Ticket does not exist.'
 
 
-c = CustomerInfo('Petro', 'Petrenko', '098765432', 'petpet@gmail.com', True)
-m = MakeOrder(c)
-m.print_events()
-m.buy_tickets()
-m.define_ticket_type()
-m.count_total()
-print(m.search_tickets())
+try:
+    c = CustomerInfo('Petro', 'Petrenko', '098765432', 'petpet@gmail.com', True)
+    m = MakeOrder(c)
+    m.print_events()
+    m.buy_tickets()
+    m.define_ticket_type()
+    m.count_total()
+    print(m.search_tickets())
+except Exception as ex:
+    print(ex)

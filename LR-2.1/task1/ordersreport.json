@@ -83,6 +83,27 @@
             "date": "20.02.2023",
             "time": "17:00",
             "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "3ST4": {
+            "name": "Informal about computers and code",
+            "price": 170.0,
+            "date": "11.11.2022",
+            "time": "11:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "2ST3": {
+            "name": "UI for beginners",
+            "price": 250.0,
+            "date": "09.11.2022",
+            "time": "17:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "4ST5": {
+            "name": "Data science for seniors",
+            "price": 500.0,
+            "date": "16.12.2022",
+            "time": "12:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
         }
     }
 }

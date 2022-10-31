@@ -1,6 +1,5 @@
 {
   "events": {
-
       "1": {
         "name": "Testing summit 2022",
         "specialization": "testing",
@@ -50,6 +49,11 @@
          "time":  "17:00",
          "date": "20.02.2023"
         }
-      }
-
+      },
+  "ticket-types": {
+    "RT" : "active",
+    "ST" : "active",
+    "LT" : "active",
+    "AT" : "active"
+  }
 }
