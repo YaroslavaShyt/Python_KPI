@@ -104,6 +104,20 @@
             "date": "16.12.2022",
             "time": "12:00",
             "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "5ST8": {
+            "name": "Get back to work after holidays",
+            "price": 42.5,
+            "date": "05.01.2023",
+            "time": "19:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "5ST9": {
+            "name": "Get back to work after holidays",
+            "price": 42.5,
+            "date": "05.01.2023",
+            "time": "19:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
         }
     }
 }

@@ -1,4 +1,10 @@
 {
+  "ticket-types": {
+    "RT" : "active",
+    "ST" : "active",
+    "LT" : "active",
+    "AT" : "active"
+  },
   "events": {
       "1": {
         "name": "Testing summit 2022",
@@ -16,7 +22,7 @@
       },
        "3": {
          "name": "Informal about computers and code",
-         "specialization": ["testing", "software engineering", "data science"],
+         "specialization": "testing, software engineering, data science",
          "price": 340,
          "time": "11:00",
          "date": "11.11.2022"
@@ -37,7 +43,7 @@
       },
       "6": {
          "name": "SQL in 2023",
-         "specialization": ["web", "software engineering"],
+         "specialization": "web, software engineering",
          "price": 350,
          "time": "18:00",
          "date": "16.02.2023"
@@ -49,11 +55,5 @@
          "time":  "17:00",
          "date": "20.02.2023"
         }
-      },
-  "ticket-types": {
-    "RT" : "active",
-    "ST" : "active",
-    "LT" : "active",
-    "AT" : "active"
-  }
+      }
 }

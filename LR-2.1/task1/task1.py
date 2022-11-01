@@ -2,7 +2,10 @@ import re
 import json
 from datetime import datetime
 
-DISCOUNT = {"STUDENT_D": 0.5, "ADVANCED_D": 0.6, "LATE_D": 1.1}
+DISCOUNT = {"RT": 1, "ST": 0.5, "AT": 0.6, "LT": 1.1}
+TIC_DAY_LIM = {'LATE': {'LATE_MIN': 0, 'LATE_MAX': 10},
+               'REG': {'REG_MIN': 11, 'REG_MAX': 60},
+               'ADV': {'ADV_MIN': 61}}
 
 
 class CustomerInfo:
@@ -31,7 +34,7 @@ class CustomerInfo:
     def customer_name(self, new_n):
         if not isinstance(new_n, str):
             raise TypeError('Incorrect type for name!')
-        if re.search('[^A-Za-z\'-]', new_n):
+        elif re.search('[^A-Za-z\'-]', new_n):
             raise ValueError('Incorrect character in name!')
         self.__customer_name = new_n
 
@@ -43,7 +46,7 @@ class CustomerInfo:
     def customer_surname(self, new_s):
         if not isinstance(new_s, str):
             raise TypeError('Incorrect type for surname!')
-        if re.search('[^A-Za-z\'-]', new_s):
+        elif re.search('[^A-Za-z\'-]', new_s):
             raise ValueError('Incorrect character in surname!')
         self.__customer_surname = new_s
 
@@ -55,8 +58,8 @@ class CustomerInfo:
     def customer_phone(self, new_ph):
         if not isinstance(new_ph, str):
             raise TypeError('Incorrect type for phone number!')
-        if re.search('[^+0-9]', new_ph):
-            raise ValueError('Incorrect character for phone number!')
+        elif re.search('[^+0-9]', new_ph):
+            raise ValueError('Incorrect character in phone number!')
         self.__customer_phone = new_ph
 
     @property
@@ -67,7 +70,7 @@ class CustomerInfo:
     def customer_email(self, new_e):
         if not isinstance(new_e, str):
             raise TypeError("Incorrect type for email!")
-        if not re.search(r'[\S+@a-z.a-z]', new_e):
+        elif not re.search(r'[\S+@a-z.a-z]', new_e):
             raise ValueError("Invalid email!")
         self.__customer_email = new_e
 
@@ -97,7 +100,7 @@ class Event:
     def id_event(self, new_id):
         if not isinstance(new_id, str):
             raise TypeError('Incorrect type for event id!')
-        if new_id not in self.data["events"]:
+        elif new_id not in self.data["events"]:
             raise ValueError('This event does not exist!')
         self.__id_event = new_id
 
@@ -108,7 +111,7 @@ class Event:
     @event_name.setter
     def event_name(self, new_n):
         if not isinstance(new_n, str):
-            raise TypeError('Incorrect type for event name')
+            raise TypeError('Incorrect type for event name!')
         self.__event_name = new_n
 
     @property
@@ -117,8 +120,10 @@ class Event:
 
     @specialization.setter
     def specialization(self, new_s):
-        if not isinstance(new_s, str | list):
+        if not isinstance(new_s, str):
             raise TypeError('Incorrect type for specialization!')
+        elif re.search(r'[^A-Za-z\s,\']', new_s):
+            raise ValueError('Incorrect symbol in specializations!')
         self.__specialization = new_s
 
     @property
@@ -141,7 +146,7 @@ class Event:
     def event_date(self, new_d):
         if not isinstance(new_d, str):
             raise TypeError('Incorrect type for date!')
-        if re.search(r'[^0-9.\s]', new_d):
+        elif re.search(r'[^0-9.\s]', new_d):
             raise ValueError('Incorrect chars in date!')
         self.__event_date = new_d
 
@@ -153,7 +158,7 @@ class Event:
     def event_time(self, new_t):
         if not isinstance(new_t, str):
             raise TypeError('Incorrect type for event time!')
-        if re.search('r[^0-9:]', new_t):
+        elif re.search('r[^0-9:]', new_t):
             raise ValueError('Incorrect chars in event time!')
         self.__event_time = new_t
 
@@ -171,9 +176,22 @@ class RegularTicket:
         self.customer = customer
         self.ticket_num = num
         self.unique_id = unique
+        self.discount = DISCOUNT[self.unique_id]
         self.unique_cod = self.event.id_event + self.unique_id + str(self.ticket_num)
         self.ticket_price = self.event.ticket_price
         self.write_to_report()
+
+    @property
+    def ticket_price(self):
+        return self.__ticket_price
+
+    @ticket_price.setter
+    def ticket_price(self, new_p):
+        if not isinstance(new_p, int | float):
+            raise TypeError('Incorrect type for price!')
+        elif new_p < 0:
+            raise ValueError('Price cannot be less 0')
+        self.__ticket_price = round(new_p * self.discount, 2)
 
     @property
     def ticket_num(self):
@@ -183,7 +201,7 @@ class RegularTicket:
     def ticket_num(self, new_n):
         if not isinstance(new_n, int):
             raise TypeError('Incorrect type for ticket number!')
-        if new_n < 1:
+        elif new_n < 1:
             raise ValueError('Incorrect value for ticket number!')
         self.__ticket_num = new_n
 
@@ -197,7 +215,7 @@ class RegularTicket:
             data = json.load(e)
         if not isinstance(new_id, str):
             raise TypeError('Incorrect type for unique id!')
-        if new_id not in data["ticket-types"]:
+        elif new_id not in data["ticket-types"]:
             raise ValueError('Unique id does not exist!')
         self.__unique_id = new_id
 
@@ -246,59 +264,30 @@ class StudentTicket(RegularTicket):
     def __init__(self, event, customer, num, unique='ST'):
         super().__init__(event, customer, num, unique)
 
-    @property
-    def ticket_price(self):
-        return self.__ticket_price
-
-    @ticket_price.setter
-    def ticket_price(self, new_p):
-        if not isinstance(new_p, int | float):
-            raise TypeError('Incorrect type for price!')
-        if new_p < 0:
-            raise ValueError('Price cannot be less 0')
-        self.__ticket_price = round(new_p * DISCOUNT["STUDENT_D"], 2)
-
 
 class AdvancedTicket(RegularTicket):
     def __init__(self, event, customer, num, unique='AT'):
         super().__init__(event, customer, num, unique)
-
-    @property
-    def ticket_price(self):
-        return self.__ticket_price
-
-    @ticket_price.setter
-    def ticket_price(self, new_p):
-        if not isinstance(new_p, int | float):
-            raise TypeError('Incorrect type for price!')
-        if new_p < 0:
-            raise ValueError('Price cannot be less 0')
-        self.__ticket_price = round(new_p * DISCOUNT["ADVANCED_D"], 2)
 
 
 class LateTicket(RegularTicket):
     def __init__(self, event, customer, num, unique='LT'):
         super().__init__(event, customer, num, unique)
 
-    @property
-    def ticket_price(self):
-        return self.__ticket_price
-
-    @ticket_price.setter
-    def ticket_price(self, new_p):
-        if not isinstance(new_p, int | float):
-            raise TypeError('Incorrect type for price!')
-        if new_p < 0:
-            raise ValueError('Price cannot be less 0')
-        self.__ticket_price = round(new_p * DISCOUNT["LATE_D"], 2)
-
 
 class MakeOrder:
     def __init__(self, customer):
-        self.customer = customer
-        self.order_date = f'{datetime.now():%d.%m.%Y}'
-        self.order_list = []
-        self.tickets_list = []
+        try:
+            with open('eventsinfo.json', 'r') as f:
+                self.data = json.load(f)
+            with open('orders.json', 'r') as o:
+                self.orders = json.load(o)
+            self.customer = customer
+            self.order_date = f'{datetime.now():%d.%m.%Y}'
+            self.order_list = []
+            self.tickets_list = []
+        except FileNotFoundError:
+            raise FileNotFoundError('Cannot find file!')
 
     @property
     def customer(self):
@@ -310,82 +299,55 @@ class MakeOrder:
             raise TypeError('Incorrect data for customer!')
         self.__customer = new_c
 
-    @staticmethod
-    def print_events():
-        with open('eventsinfo.json', 'r') as f:
-            data = json.load(f)
-        for i in data['events']:
-            print(f"(ID-{i})  {data['events'][str(i)]['name']}\n"
-                  f"spec.:   {data['events'][str(i)]['specialization']}\n"
-                  f"price:   {data['events'][str(i)]['price']}\n"
-                  f"time:    {data['events'][str(i)]['time']}\n"
-                  f"date:    {data['events'][str(i)]['date']}\n")
+    def print_events(self):
+        for i in self.data['events']:
+            print(f"(ID-{i})  {self.data['events'][str(i)]['name']}\n"
+                  f"spec.:   {self.data['events'][str(i)]['specialization']}\n"
+                  f"price:   {self.data['events'][str(i)]['price']}\n"
+                  f"time:    {self.data['events'][str(i)]['time']}\n"
+                  f"date:    {self.data['events'][str(i)]['date']}\n")
 
     def buy_tickets(self):
-        with open('eventsinfo.json', 'r') as f:
-            data = json.load(f)
-        condition = 1
-        while condition:
-            while True:
-                id_event = int(input('Enter id of chosen event: '))
-                if str(id_event) in data["events"]:
-                    break
-                else:
-                    print('Event does not exist!')
-            self.order_list.append(str(id_event))
-            while True:
-                choice = int(input('Add more/quit? - 1/0: '))
-                if not isinstance(choice, int) or choice < 0 or choice > 1:
-                    print('Incorrect user input for choice!')
-                else:
-                    if not choice:
-                        condition = 0
-                    break
+        while True:
+            id_event = input('Enter id of chosen event or quit(0): ')
+            if int(id_event) == 0:
+                break
+            elif id_event not in self.data["events"]:
+                print('Event does not exist!')
+            elif not self.orders["all-left"][id_event]:
+                print('Sold out!')
+            elif not self.count_day_dif(id_event):
+                print('Event has ended!')
+            else:
+                self.order_list.append(str(id_event))
 
     def define_ticket_type(self):
-        with open('orders.json', 'r') as o:
-            orders = json.load(o)
-        if self.customer.customer_student:
-            for i in self.order_list:
-                if not orders["all-left"][i]:
-                    print('Event id: ', i, '. All the tickets have been sold! :(')
-                else:
-                    self.tickets_list.append(StudentTicket(Event(i), self.customer, orders["all-sold"][i]+1))
-        else:
-            for i in self.order_list:
-                if not orders["all-left"][i]:
-                    print('Event id: ', i, '. All the tickets have been sold! :(')
-                else:
-                    dif = self.count_day_dif(i)
-                    if dif < 0:
-                        print('Event has been finished!')
-                    elif 0 < dif < 10:
-                        self.tickets_list.append(LateTicket(Event(i), self.customer, orders["all-sold"][i]+1))
-                    elif 10 <= dif < 60:
-                        self.tickets_list.append(RegularTicket(Event(i), self.customer, orders["all-sold"][i]+1))
-                    elif dif > 60:
-                        self.tickets_list.append(AdvancedTicket(Event(i), self.customer, orders["all-sold"][i]+1))
-                    orders["all-sold"][i] += 1
-                    orders["all-left"][i] -= 1
+        for i in self.order_list:
+            if self.customer.customer_student:
+                self.tickets_list.append(StudentTicket(Event(i), self.customer, self.orders["all-sold"][i]+1))
+            else:
+                dif = self.count_day_dif(i)
+                if dif in range(TIC_DAY_LIM['LATE']['LATE_MIN'], TIC_DAY_LIM['LATE']['LATE_MAX']):
+                    self.tickets_list.append(LateTicket(Event(i), self.customer, self.orders["all-sold"][i]+1))
+                elif dif in range(TIC_DAY_LIM['REGULAR']['REG_MIN'], TIC_DAY_LIM['REGULAR']['REG_MAX']):
+                    self.tickets_list.append(RegularTicket(Event(i), self.customer, self.orders["all-sold"][i]+1))
+                elif dif > TIC_DAY_LIM['ADVANCED']['ADV_MIN']:
+                    self.tickets_list.append(AdvancedTicket(Event(i), self.customer, self.orders["all-sold"][i]+1))
+            self.orders["all-sold"][i] += 1
+            self.orders["all-left"][i] -= 1
         with open('orders.json', 'w') as f:
-            json.dump(orders, f, indent=3)
+            json.dump(self.orders, f, indent=3)
 
     def count_day_dif(self, id_event):
-        with open('eventsinfo.json', 'r') as e:
-            events_info = json.load(e)
-        date = str(events_info["events"][id_event]["date"])
-        return (datetime.strptime(date, '%d.%m.%Y') - datetime.strptime(self.order_date, '%d.%m.%Y')).days
+        return (datetime.strptime(str(self.data["events"][id_event]["date"]), '%d.%m.%Y') -
+                datetime.strptime(self.order_date, '%d.%m.%Y')).days
 
     def show_info(self):
         for i in self.tickets_list:
             print(i)
 
     def count_total(self):
-        total = 0
-        self.show_info()
-        for i in self.tickets_list:
-            total += i.ticket_price
-        print(f'TOTAL TO PAY: {total}')
+        return f'TOTAL TO PAY: {sum([i.ticket_price for i in self.tickets_list])}'
 
     @staticmethod
     def search_tickets():
@@ -409,7 +371,8 @@ try:
     m.print_events()
     m.buy_tickets()
     m.define_ticket_type()
-    m.count_total()
+    m.show_info()
+    print(m.count_total())
     print(m.search_tickets())
 except Exception as ex:
     print(ex)
