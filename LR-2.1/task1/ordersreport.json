@@ -118,6 +118,97 @@
             "date": "05.01.2023",
             "time": "19:00",
             "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "6ST5": {
+            "name": "SQL in 2023",
+            "price": 175.0,
+            "date": "16.02.2023",
+            "time": "18:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "5ST10": {
+            "name": "Get back to work after holidays",
+            "price": 42.5,
+            "date": "05.01.2023",
+            "time": "19:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "1ST8": {
+            "name": "Testing summit 2022",
+            "price": 100.0,
+            "date": "05.11.2022",
+            "time": "15:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "1ST9": {
+            "name": "Testing summit 2022",
+            "price": 100.0,
+            "date": "05.11.2022",
+            "time": "15:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "1ST10": {
+            "name": "Testing summit 2022",
+            "price": 100.0,
+            "date": "05.11.2022",
+            "time": "15:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "1ST11": {
+            "name": "Testing summit 2022",
+            "price": 100.0,
+            "date": "05.11.2022",
+            "time": "15:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "1ST12": {
+            "name": "Testing summit 2022",
+            "price": 100.0,
+            "date": "05.11.2022",
+            "time": "15:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "4ST6": {
+            "name": "Data science for seniors",
+            "price": 500.0,
+            "date": "16.12.2022",
+            "time": "12:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "7ST6": {
+            "name": "Change the specialization: how?",
+            "price": 125.0,
+            "date": "20.02.2023",
+            "time": "17:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "5ST11": {
+            "name": "Get back to work after holidays",
+            "price": 42.5,
+            "date": "05.01.2023",
+            "time": "19:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "5ST12": {
+            "name": "Get back to work after holidays",
+            "price": 42.5,
+            "date": "05.01.2023",
+            "time": "19:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "6AT6": {
+            "name": "SQL in 2023",
+            "price": 210.0,
+            "date": "16.02.2023",
+            "time": "18:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
+        },
+        "5AT13": {
+            "name": "Get back to work after holidays",
+            "price": 51.0,
+            "date": "05.01.2023",
+            "time": "19:00",
+            "customer": "Name: Petro\nSurname: Petrenko\nPhone number: 098765432\nEmail: petpet@gmail.com"
         }
     }
 }

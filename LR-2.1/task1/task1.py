@@ -2,7 +2,9 @@ import re
 import json
 from datetime import datetime
 
+
 DISCOUNT = {"RT": 1, "ST": 0.5, "AT": 0.6, "LT": 1.1}
+
 TIC_DAY_LIM = {'LATE': {'LATE_MIN': 0, 'LATE_MAX': 10},
                'REG': {'REG_MIN': 11, 'REG_MAX': 60},
                'ADV': {'ADV_MIN': 61}}
@@ -277,17 +279,15 @@ class LateTicket(RegularTicket):
 
 class MakeOrder:
     def __init__(self, customer):
-        try:
-            with open('eventsinfo.json', 'r') as f:
-                self.data = json.load(f)
-            with open('orders.json', 'r') as o:
-                self.orders = json.load(o)
-            self.customer = customer
-            self.order_date = f'{datetime.now():%d.%m.%Y}'
-            self.order_list = []
-            self.tickets_list = []
-        except FileNotFoundError:
-            raise FileNotFoundError('Cannot find file!')
+        with open('eventsinfo.json', 'r') as f:
+            self.data = json.load(f)
+        with open('orders.json', 'r') as o:
+            self.orders = json.load(o)
+        self.customer = customer
+        self.order_date = f'{datetime.now():%d.%m.%Y}'
+        self.ticket_types = [RegularTicket, StudentTicket, AdvancedTicket, LateTicket]
+        self.order_list = []
+        self.tickets_list = []
 
     @property
     def customer(self):
@@ -321,22 +321,31 @@ class MakeOrder:
             else:
                 self.order_list.append(str(id_event))
 
-    def define_ticket_type(self):
+    def form_order(self):
         for i in self.order_list:
-            if self.customer.customer_student:
-                self.tickets_list.append(StudentTicket(Event(i), self.customer, self.orders["all-sold"][i]+1))
-            else:
-                dif = self.count_day_dif(i)
-                if dif in range(TIC_DAY_LIM['LATE']['LATE_MIN'], TIC_DAY_LIM['LATE']['LATE_MAX']):
-                    self.tickets_list.append(LateTicket(Event(i), self.customer, self.orders["all-sold"][i]+1))
-                elif dif in range(TIC_DAY_LIM['REGULAR']['REG_MIN'], TIC_DAY_LIM['REGULAR']['REG_MAX']):
-                    self.tickets_list.append(RegularTicket(Event(i), self.customer, self.orders["all-sold"][i]+1))
-                elif dif > TIC_DAY_LIM['ADVANCED']['ADV_MIN']:
-                    self.tickets_list.append(AdvancedTicket(Event(i), self.customer, self.orders["all-sold"][i]+1))
+            ticket = self.define_ticket_type(i)
+            self.tickets_list.append(self.return_ticket(ticket, i))
             self.orders["all-sold"][i] += 1
             self.orders["all-left"][i] -= 1
         with open('orders.json', 'w') as f:
             json.dump(self.orders, f, indent=3)
+
+    def define_ticket_type(self, i):
+        type_tick = RegularTicket
+        if self.customer.customer_student:
+            type_tick = StudentTicket
+        else:
+            dif = self.count_day_dif(i)
+            if dif in range(TIC_DAY_LIM['LATE']['LATE_MIN'], TIC_DAY_LIM['LATE']['LATE_MAX']):
+                type_tick = LateTicket
+            elif dif > TIC_DAY_LIM['ADV']['ADV_MIN']:
+                type_tick = AdvancedTicket
+        return type_tick
+
+    def return_ticket(self, type_tick, ev):
+        if type_tick in self.ticket_types:
+            return type_tick(Event(ev), self.customer, self.orders["all-sold"][ev]+1)
+        raise ValueError('No tickets of such type available!')
 
     def count_day_dif(self, id_event):
         return (datetime.strptime(str(self.data["events"][id_event]["date"]), '%d.%m.%Y') -
@@ -353,24 +362,27 @@ class MakeOrder:
     def search_tickets():
         id = input('Enter your ticket code: ')
         with open('ordersreport.json', 'r') as f:
-            k = json.load(f)
-        for i in k["ticket"]:
+            orders = json.load(f)
+        for i in orders["ticket"]:
             if i == id:
-                return f'Ticket found:\n' \
-                       f'name: {k["ticket"][i]["name"]}\n' \
-                       f'price: {k["ticket"][i]["price"]}\n' \
-                       f'date: {k["ticket"][i]["date"]}\n' \
-                       f'time: {k["ticket"][i]["time"]}\n' \
-                       f'customer:\n    {k["ticket"][i]["customer"]}'
+                return f'Ticket found:\n\n' \
+                       f'-----------------------------------\n' \
+                       f'NUMBER: {i}\n' \
+                       f'name: {orders["ticket"][i]["name"]}\n' \
+                       f'price: {orders["ticket"][i]["price"]}\n' \
+                       f'date: {orders["ticket"][i]["date"]}\n' \
+                       f'time: {orders["ticket"][i]["time"]}\n\n' \
+                       f'customer:\n{orders["ticket"][i]["customer"]}\n' \
+                       f'-----------------------------------'
         return f'Ticket does not exist.'
 
 
 try:
-    c = CustomerInfo('Petro', 'Petrenko', '098765432', 'petpet@gmail.com', True)
+    c = CustomerInfo('Petro', 'Petrenko', '098765432', 'petpet@gmail.com', False)
     m = MakeOrder(c)
     m.print_events()
     m.buy_tickets()
-    m.define_ticket_type()
+    m.form_order()
     m.show_info()
     print(m.count_total())
     print(m.search_tickets())
