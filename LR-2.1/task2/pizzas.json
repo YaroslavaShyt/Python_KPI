@@ -1,4 +1,75 @@
 {
+  "0": {
+      "name": "Monday pizza",
+      "ingredients": {
+        "1": {"corn": 20},
+        "2": {"dough": 70},
+        "5": {"onion": 30},
+        "15": {"sausage": 50},
+        "19": {"cheese": 50}
+      }
+    },
+    "1": {
+      "name": "Tuesday pizza",
+      "ingredients": {
+        "2": {"dough": 70},
+        "3": {"olives": 20},
+        "7": {"tomato": 30},
+        "12": {"bacon": 50},
+        "19": {"cheese": 50}
+      }
+    },
+    "2": {
+      "name": "Wednesday pizza",
+      "ingredients": {
+        "2": {"dough": 70},
+        "20": {"mozzarella": 70},
+        "21": {"brie": 60},
+        "22": {"parmesan": 65},
+        "23": {"cheddar": 66}
+      }
+    },
+    "3": {
+      "name": "Thursday pizza",
+      "ingredients": {
+        "2": {"dough": 70},
+        "12": {"bacon": 50},
+        "16": {"salami": 60},
+        "17": {"chorizo sausage": 75},
+        "18": {"hunter sausage": 77},
+        "19": {"cheese": 50}
+      }
+    },
+    "4": {
+      "name": "Friday pizza",
+      "ingredients": {
+        "1": {"corn": 20},
+        "2": {"dough": 70},
+        "4": {"pineapple": 22},
+        "7": {"tomato": 30},
+        "9": {"tuna": 44}
+      }
+    },
+    "5": {
+      "name": "Saturday pizza",
+      "ingredients": {
+        "2": {"dough": 70},
+        "8": {"cherry tomatoes": 31},
+        "13": {"ham": 40},
+        "14": {"chicken": 45},
+        "20": {"mozzarella": 70}
+      }
+    },
+    "6": {
+      "name": "Sunday pizza",
+      "ingredients": {
+        "2": {"dough": 70},
+        "6": {"red onion": 33},
+        "9": {"tuna": 44},
+        "10": {"salmon": 70},
+        "11": {"crab": 90}
+      }
+    },
     "ingredients": {
        "1": {"corn": 20},
        "2": {"dough": 70},
@@ -23,33 +94,6 @@
        "21": {"brie": 60},
        "22": {"parmesan": 65},
        "23": {"cheddar": 66}
-    },
-    "0": {
-      "name": "Monday pizza",
-      "ingredients": ["dough", "sausage", "onion", "cheese", "corn"]
-    },
-    "1": {
-      "name": "Tuesday pizza",
-      "ingredients": ["dough", "bacon", "cheese", "tomato", "olives"]
-    },
-    "2": {
-      "name": "Wednesday pizza",
-      "ingredients": ["dough", "mozzarella", "brie", "parmesan", "cheddar"]
-    },
-    "3": {
-      "name": "Thursday pizza",
-      "ingredients": ["dough", "bacon", "salami", "chorizo sausage", "hunter sausage", "cheese"]
-    },
-    "4": {
-      "name": "Friday pizza",
-      "ingredients": ["tuna", "corn", "tomato", "pineapple"]
-    },
-    "5": {
-      "name": "Saturday pizza",
-      "ingredients": ["mozzarella", "ham", "cherry tomatoes", "chicken"]
-    },
-    "6": {
-      "name": "Sunday pizza",
-      "ingredients": ["salmon", "red onion", "tuna", "crab"]
     }
+
 }

@@ -74,7 +74,7 @@ class MondayPizza:
 
     def __str__(self):
         return f'|Type|: {self.pizza_name}\n'\
-               f'|Ingredients|: {str(self.pizza_ingred)[1:-1]}'
+               f'|Ingredients|: {self.pizza_ingred}'
 
 
 class TuesdayPizza(MondayPizza):
@@ -149,8 +149,7 @@ class Order:
     def define_pizza():
         pizzas = {0: MondayPizza(), 1: TuesdayPizza(), 2: WednesdayPizza(), 3: ThursdayPizza(),
                   4: FridayPizza(), 5: SaturdayPizza(), 6: SundayPizza()}
-        day = datetime.datetime.now().weekday()
-        return pizzas[day]
+        return pizzas[datetime.datetime.now().weekday()]
 
     def make_order(self):
         print("Hello! Your pizza today:\n", self.pizza_of_day)
@@ -169,28 +168,17 @@ class Order:
                f"{self.count_total()}"
 
     def add_ingredients(self):
-        with open('pizzas.json', 'r') as p:
-            data = json.load(p)
-        self.show_ingredients(data)
+        print(self.pizza_of_day.pizza_ingred)
         option = input("Choose the option: ")
-        if option not in data["ingredients"] or list(data["ingredients"][option].keys())[0] not in self.ingredients_num:
+        if option not in self.pizza_of_day.pizza_ingred:
             print('No such option.')
         else:
-            self.ingredients_num[list(list(data["ingredients"].values())[int(option) - 1].keys())[0]] += 1
-
-    def show_ingredients(self, data):
-        for i in range(1, len(data["ingredients"]) + 1):
-            if list(list(data["ingredients"].values())[i - 1].keys())[0] in list(self.ingredients_num.keys()):
-                print(i, data["ingredients"][str(i)])
+            self.ingredients_num[option] += 1
 
     def count_total(self):
         total = 0
-        with open('pizzas.json', 'r') as p:
-            data = json.load(p)
-        for i in range(1, len(data["ingredients"])+1):
-            product = list(list(data["ingredients"].values())[i-1].keys())[0]
-            if product in list(self.ingredients_num.keys()):
-                total += data["ingredients"][str(i)][product] * self.ingredients_num[product]
+        for i in self.ingredients_num:
+            total += list(self.pizza_of_day.pizza_ingred[i].values())[0] * self.ingredients_num[i]
         return total
 
 
