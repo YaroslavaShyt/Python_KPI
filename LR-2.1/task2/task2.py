@@ -158,14 +158,12 @@ class Order:
             if int(choice) == 1:
                 self.add_ingredients()
             elif int(choice) == 0:
-                break
-            else:
-                print('Wrong command!')
-        return f"---Order---\n" \
-               f"{self.pizza_of_day}\n" \
-               f"{self.customer}\n" \
-               f"---Total---\n"\
-               f"{self.count_total()}"
+                return f"---Order---\n" \
+                       f"{self.pizza_of_day}\n" \
+                       f"{self.customer}\n" \
+                       f"---Total---\n" \
+                       f"{self.count_total()}"
+            print('Wrong command!')
 
     def add_ingredients(self):
         print(self.pizza_of_day.pizza_ingred)
