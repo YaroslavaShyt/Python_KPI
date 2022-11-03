@@ -17,7 +17,7 @@ class Customer:
     def customer_name(self, new_n):
         if not isinstance(new_n, str):
             raise TypeError('Incorrect type for name!')
-        if re.search('[^A-Za-z\'-]', new_n):
+        elif re.search('[^A-Za-z\'-]', new_n):
             raise ValueError('Incorrect character in name!')
         self.__customer_name = new_n
 
@@ -29,7 +29,7 @@ class Customer:
     def customer_surname(self, new_s):
         if not isinstance(new_s, str):
             raise TypeError('Incorrect type for surname!')
-        if re.search('[^A-Za-z\'-]', new_s):
+        elif re.search('[^A-Za-z\'-]', new_s):
             raise ValueError('Incorrect character in surname!')
         self.__customer_surname = new_s
 
@@ -41,7 +41,7 @@ class Customer:
     def customer_phone(self, new_ph):
         if not isinstance(new_ph, str):
             raise TypeError('Incorrect type for phone number!')
-        if re.search('[^+0-9]', new_ph):
+        elif re.search('[^+0-9]', new_ph):
             raise ValueError('Incorrect character for phone number!')
         self.__customer_phone = new_ph
 
@@ -55,10 +55,10 @@ class Customer:
 class MondayPizza:
     def __init__(self, day=0):
         with open('pizzas.json', 'r') as p:
-            data = json.load(p)
+            self.data = json.load(p)
         self.day = day
-        self.pizza_name = data[str(self.day)]["name"]
-        self.pizza_ingred = data[str(self.day)]["ingredients"]
+        self.pizza_name = self.data[str(self.day)]["name"]
+        self.pizza_ingred = self.data[str(self.day)]["ingredients"]
 
     @property
     def day(self):
@@ -68,13 +68,15 @@ class MondayPizza:
     def day(self, new_d):
         if not isinstance(new_d, int):
             raise TypeError("Incorrect day type!")
-        if new_d < 0 or new_d > 6:
+        elif new_d < 0 or new_d > 6:
             raise ValueError("Incorrect value for day!")
         self.__day = new_d
 
     def __str__(self):
+        ingred = ', '.join(f'{key}: {list(value.keys())[0]} - {list(value.values())[0]}'
+                           for key, value in self.data[str(self.day)]["ingredients"].items())
         return f'|Type|: {self.pizza_name}\n'\
-               f'|Ingredients|: {self.pizza_ingred}'
+               f'|Ingredients|: {ingred}'
 
 
 class TuesdayPizza(MondayPizza):
@@ -163,10 +165,11 @@ class Order:
                        f"{self.customer}\n" \
                        f"---Total---\n" \
                        f"{self.count_total()}"
-            print('Wrong command!')
+            else:
+                print('Wrong command!')
 
     def add_ingredients(self):
-        print(self.pizza_of_day.pizza_ingred)
+        print(self.pizza_of_day)
         option = input("Choose the option: ")
         if option not in self.pizza_of_day.pizza_ingred:
             print('No such option.')
@@ -174,10 +177,8 @@ class Order:
             self.ingredients_num[option] += 1
 
     def count_total(self):
-        total = 0
-        for i in self.ingredients_num:
-            total += list(self.pizza_of_day.pizza_ingred[i].values())[0] * self.ingredients_num[i]
-        return total
+        return sum([list(self.pizza_of_day.pizza_ingred[i].values())[0] * self.ingredients_num[i]
+                    for i in self.ingredients_num])
 
 
 try:

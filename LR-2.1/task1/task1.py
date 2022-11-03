@@ -336,9 +336,9 @@ class MakeOrder:
             type_tick = StudentTicket
         else:
             dif = self.count_day_dif(i)
-            if dif in range(TIC_DAY_LIM['LATE']['LATE_MIN'], TIC_DAY_LIM['LATE']['LATE_MAX']):
+            if dif in range(TIC_DAY_LIM['LATE']['LATE_MIN'], TIC_DAY_LIM['LATE']['LATE_MAX']+1):
                 type_tick = LateTicket
-            elif dif > TIC_DAY_LIM['ADV']['ADV_MIN']:
+            elif dif >= TIC_DAY_LIM['ADV']['ADV_MIN']:
                 type_tick = AdvancedTicket
         return type_tick
 
