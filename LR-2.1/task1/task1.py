@@ -218,7 +218,7 @@ class RegularTicket:
         if not isinstance(new_id, str):
             raise TypeError('Incorrect type for unique id!')
         elif new_id not in data["ticket-types"]:
-            raise ValueError('Unique id does not exist!')
+            raise KeyError('Unique id does not exist!')
         self.__unique_id = new_id
 
     def write_to_report(self):
