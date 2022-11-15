@@ -69,14 +69,6 @@ class Person:
             raise ValueError('Incorrect value for sex')
         self.__sex = new_s
 
-    def __str__(self):
-        return f'Surname: {self.surname}\n' \
-               f'Name: {self.name}\n' \
-               f'Patronymic: {self.patr}\n' \
-               f'Sex: {self.sex}\n' \
-               f'Date of birth: {self.birth}' \
-
-
 
 class Employee(Person):
     def __init__(self,  surname, name, patr, birth, sex, organization, speciality, position, salary, experience):
@@ -90,13 +82,21 @@ class Employee(Person):
 
 class Organization:
     def __init__(self,  value=5,):
-        self.employee = []
+        self.employees = []
+        self.is_bigger = []
         self.value = value
         self.index = 0
         self.num = 0
 
+    def __str__(self):
+        return '\n'.join(map(lambda item: f'{item[0]} - {item[1]}', zip(self.employees, self.is_bigger)))
+
     def add_empl(self, new_e):
-        self.employee.__add__(new_e)
+        self.employees.append(new_e)
+        if new_e.experience > self.value:
+            self.is_bigger.append('+')
+        else:
+            self.is_bigger.append('-')
 
     @property
     def value(self):
@@ -115,11 +115,9 @@ class Organization:
         return self
 
     def __next__(self):
-        if self.index < len(self.employee):
-            if self.employee[self.index].experience < self.value:
-                self.num += 1
+        if self.index < len(self.employees):
             self.index += 1
-            return self.employee[self.index - 1]
+            return self.employees[self.index - 1], self.is_bigger[self.index - 1]
         raise StopIteration()
 
 
@@ -132,7 +130,7 @@ o = Organization()
 for item in lst:
     o.add_empl(item)
 
-for item in o:
-    print(item)
+for employee, condition in o:
+    print(employee, condition)
 
 
