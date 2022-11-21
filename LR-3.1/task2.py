@@ -90,17 +90,16 @@ class Menu:
                        f'1. Add info\n'
                        f'2. Get info\n'
                        f'3. Form report all-left\n')
-            match ch:
-                case '1':
-                    self.add_info(items)
-                case '2':
-                    self.get_info(items)
-                case '3':
-                    self.form_report(items)
-                case 'e':
-                    break
-                case _:
-                    print('Wrong command!')
+            if ch == '1':
+                self.add_info(items)
+            elif ch == '2':
+                self.get_info(items)
+            elif ch == '3':
+                self.form_report(items)
+            elif ch == 'e':
+                break
+            else:
+                print('Wrong command!')
 
     def add_info(self, items):
         self.get_info(items)
@@ -109,20 +108,19 @@ class Menu:
             if choice != 'e':
                 if int(choice) <= len(items):
                     option = input('Enter option you want to change (1-name, 2-price, 3-quantity, e-exit): ')
-                    match option:
-                        case '1':
-                            name = input('Enter new name: ')
-                            items[int(choice)-1].name = name
-                        case '2':
-                            price = input('Enter new price: ')
-                            items[int(choice) - 1].price = float(price)
-                        case '3':
-                            quantity = input('Enter new quantity: ')
-                            items[int(choice) - 1].quantity = int(quantity)
-                        case 'e':
-                            break
-                        case _:
-                            print('Unknown command!')
+                    if option == '1':
+                        name = input('Enter new name: ')
+                        items[int(choice)-1].name = name
+                    elif option == '2':
+                        price = input('Enter new price: ')
+                        items[int(choice) - 1].price = float(price)
+                    elif option == '3':
+                        quantity = input('Enter new quantity: ')
+                        items[int(choice) - 1].quantity = int(quantity)
+                    elif option == 'e':
+                        break
+                    else:
+                        print('Unknown command!')
                 else:
                     print('This item does not exist!')
             else:
