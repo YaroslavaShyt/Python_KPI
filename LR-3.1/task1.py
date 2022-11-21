@@ -1,6 +1,5 @@
 import math
 import operator
-import warnings
 
 
 class Rational:
