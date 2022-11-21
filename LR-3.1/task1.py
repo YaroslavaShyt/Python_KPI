@@ -82,8 +82,7 @@ class Rational:
 
     def comparison(self, frac, operation):
         if isinstance(frac, float):
-            warnings.warn('Float comparison may have troubles '
-                          'due to computer rules!')
+            print('Float comparison may have troubles due to computer rules!')
             return operation(float(self), frac)
         elif isinstance(frac, int):
             frac = Rational(frac)
