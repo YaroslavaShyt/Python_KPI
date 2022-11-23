@@ -9,11 +9,11 @@ class Rational:
 
     @property
     def num(self):
-        return self.__num
+        return self.__num // math.gcd(self.__num, self.__den)
 
     @property
     def den(self):
-        return self.__den
+        return self.__den // math.gcd(self.__num, self.__den)
 
     @num.setter
     def num(self, new_num):
@@ -32,7 +32,7 @@ class Rational:
     def __str__(self):
         if self.__den == 1:
             return f'{self.num}'
-        return f'{self.num//math.gcd(self.num, self.den)}/{self.den//math.gcd(self.num, self.den)}'
+        return f'{self.num}/{self.den}'
 
     def __float__(self):
         return self.num / self.den
@@ -48,6 +48,9 @@ class Rational:
 
     def __sub__(self, frac):
         return self + -frac
+
+    def __neg__(self):
+        return Rational(-self.num, self.den)
 
     def __mul__(self, frac):
         if isinstance(frac, float):
@@ -67,22 +70,9 @@ class Rational:
             return NotImplemented
         return Rational(self.num * frac.den, self.den * frac.num)
 
-    def __radd__(self, frac):
-        return self + frac
-
-    def __rsub__(self, frac):
-        return -self + frac
-
-    def __rmul__(self, frac):
-        return self * frac
-
-    def __rtruediv__(self, frac):
-        return Rational(self.den, self.num) * frac
-
     def comparison(self, frac, operation):
         if isinstance(frac, float):
-            print('Float comparison may have troubles due to computer rules!')
-            return operation(float(self), frac)
+            raise TypeError('Float comparison cannot give correct result due to computer rules')
         elif isinstance(frac, int):
             frac = Rational(frac)
         elif not isinstance(frac, Rational):
@@ -104,21 +94,21 @@ class Rational:
     def __eq__(self, frac):
         return self.comparison(frac, operator.eq)
 
-    def __neg__(self):
-        return Rational(-self.num, self.den)
+    def __ne__(self, frac):
+        return self.comparison(frac, operator.ne)
 
 
 try:
     r1 = Rational(2, 5)
     r2 = Rational(3, 6)
     print(f'Fractions: {r1} {r2}\n'
-          f'Floats: {float(r1)} {float(r2)}\n'
-          f'Plus: {r1 + r2} | {r1 + 0.3}\n'
-          f'Minus: {r1 - r2}\n'
-          f'Multiply: {r1 * r2}\n'
-          f'Divide: {r1 / r2}\n'
-          f'Less|Less or equal: {r1 < r2} | {r1 <= r2}\n'
+          f'Floats   : {float(r1)}  | {float(r2)}\n'
+          f'Plus     : {r1 + r2} | {r1 + float(r2)}\n'
+          f'Minus    : {r1 - r2} \n'
+          f'Multiply : {r1 * r2} | {r1 * 2}\n'
+          f'Divide   : {r1 / r2} \n'
+          f'Less   |Less or equal   : {r1 < r2}  | {r1 <= r2}\n'
           f'Greater|Greater or equal: {r1 > r2} | {r1 >= r2}\n'
-          f'Equal: {r1 == r2}')
+          f'Equal  |Not equal       : {r1 == r2} | {r1!=r2}')
 except Exception as ex:
     print(ex)
