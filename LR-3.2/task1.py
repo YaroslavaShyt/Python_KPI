@@ -271,7 +271,7 @@ try:
     connection = pymysql.connect(host='localhost',
                                  user='root',
                                  database='icourses',
-                                 password='16012004',
+                                 password='********',
                                  charset='utf8mb4',
                                  cursorclass=pymysql.cursors.DictCursor)
     cur = connection.cursor()
