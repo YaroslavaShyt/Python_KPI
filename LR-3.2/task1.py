@@ -209,7 +209,6 @@ class LocalCourse(Course, t.ILocalCourse):
                f'Course teachers: {", ".join(i for i in self.course_teachers)}\n' \
                f'Lab: {self.lab}\n'
 
-
 class OffsiteCourse(Course, t.IOffsiteCourse):
     def __init__(self, id, title=None, programme=None, teachers=None, address=None):
         super().__init__(id, title, programme, teachers)
