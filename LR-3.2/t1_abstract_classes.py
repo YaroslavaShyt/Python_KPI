@@ -116,25 +116,25 @@ class IOffsiteCourse(ABC):
 class ICourseFactory(ABC):
     @staticmethod
     @abstractmethod
-    def add_teacher(curs, id, name, courses):
+    def add_teacher(id, name, courses):
         pass
 
     @staticmethod
     @abstractmethod
-    def add_local_course(curs, id, lab, title, programme, teachers):
+    def add_local_course(id, lab, title, programme, teachers):
         pass
 
     @staticmethod
     @abstractmethod
-    def add_offsite_course(curs, id, address, title, programme, teachers):
+    def add_offsite_course(id, address, title, programme, teachers):
         pass
 
     @staticmethod
     @abstractmethod
-    def see_all_teachers(curs):
+    def see_all_teachers():
         pass
 
     @staticmethod
     @abstractmethod
-    def see_all_courses(curs):
+    def see_all_courses():
         pass
