@@ -7,9 +7,11 @@ class Teacher(t.ITeacher):
     def __init__(self, id, name=None, courses=None):
         self.id = id
         self.name = name
+        # got only id -> download teacher data from database
         if name is None and courses is None:
             cur.execute("SELECT NAME FROM ITEACHER WHERE ID = %s", self.id)
             self.name = cur.fetchall()[0]['NAME']
+        # got new teacher data -> insert it in database
         elif name is not None and courses is not None:
             self.check_exists_id()
             cur.execute("INSERT INTO ITEACHER VALUES(%s, %s)", (self.id, self.name))
@@ -79,9 +81,11 @@ class Course(t.ICourse):
     def __init__(self, id, title=None, programme=None, teachers=None):
         self.course_id = id
         self.course_name = title
+        # got only course id -> download course from database
         if title is None and programme is None and teachers is None:
             cur.execute("SELECT TITLE FROM ICOURSE WHERE ID = %s", self.course_id)
             self.course_name = cur.fetchall()[0]["TITLE"]
+        # got new course data -> insert it in database
         elif title is not None and programme is not None and teachers is not None:
             self.check_exists_id()
             cur.execute("INSERT INTO ICOURSE VALUES(%s,%s,NULL, NULL)", (self.course_id, self.course_name))
@@ -177,9 +181,11 @@ class LocalCourse(Course, t.ILocalCourse):
     def __init__(self, id, title=None, programme=None, teachers=None, lab=None,):
         super().__init__(id, title, programme, teachers)
         self.lab = lab
+        # got course id -> download course lab data from db
         if self.lab is None:
             cur.execute("SELECT LAB FROM ICOURSE WHERE ID = %s", self.course_id)
             self.lab = cur.fetchall()[0]['LAB']
+        # got course lab -> update course table in db
         elif self.lab is not None:
             cur.execute("UPDATE ICOURSE SET LAB = %s WHERE ID = %s", (self.lab, self.course_id))
             connection.commit()
@@ -208,9 +214,11 @@ class OffsiteCourse(Course, t.IOffsiteCourse):
     def __init__(self, id, title=None, programme=None, teachers=None, address=None):
         super().__init__(id, title, programme, teachers)
         self.address = address
+        # got course id -> download course address from db
         if self.address is None:
             cur.execute("SELECT ADDRESS FROM ICOURSE WHERE ID = %s", self.course_id)
             self.address = cur.fetchall()[0]['ADDRESS']
+        # got course address -> update course table in db
         elif self.address is not None:
             cur.execute("UPDATE ICOURSE SET ADDRESS = %s WHERE ID = %s",  (self.address, self.course_id))
             connection.commit()
