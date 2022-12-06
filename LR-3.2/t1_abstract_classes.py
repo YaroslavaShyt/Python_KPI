@@ -23,15 +23,7 @@ class ITeacher(ABC):
         pass
 
     @abstractmethod
-    def download_teacher_course(self):
-        pass
-
-    @abstractmethod
     def check_exists_id(self):
-        pass
-
-    @abstractmethod
-    def set_course_to_teacher(self, courses):
         pass
 
     @abstractmethod
@@ -61,23 +53,7 @@ class ICourse(ABC):
         pass
 
     @abstractmethod
-    def download_programme(self):
-        pass
-
-    @abstractmethod
-    def download_teachers(self):
-        pass
-
-    @abstractmethod
     def check_exists_id(self):
-        pass
-
-    @abstractmethod
-    def set_teacher_to_course(self, teachers):
-        pass
-
-    @abstractmethod
-    def set_programme_to_course(self, programme):
         pass
 
     @abstractmethod
@@ -116,25 +92,25 @@ class IOffsiteCourse(ABC):
 class ICourseFactory(ABC):
     @staticmethod
     @abstractmethod
-    def add_teacher(id, name, courses):
+    def add_teacher(id, name):
         pass
 
     @staticmethod
     @abstractmethod
-    def add_local_course(id, lab, title, programme, teachers):
+    def add_local_course(id, lab, title):
         pass
 
     @staticmethod
     @abstractmethod
-    def add_offsite_course(id, address, title, programme, teachers):
+    def add_offsite_course(id, address, title):
         pass
 
     @staticmethod
     @abstractmethod
-    def see_all_teachers():
+    def set_course_to_teacher(self, courses):
         pass
 
     @staticmethod
     @abstractmethod
-    def see_all_courses():
+    def set_programme_to_course(self, programme):
         pass
