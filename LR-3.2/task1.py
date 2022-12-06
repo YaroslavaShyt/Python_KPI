@@ -58,12 +58,12 @@ class Course(t.ICourse):
         if title is None:
             cur.execute("SELECT TITLE FROM ICOURSE WHERE ID = %s", self.course_id)
             self.course_name = cur.fetchall()[0]["TITLE"]
+            self.course_programme = self.download_programme()
         # got new course data -> insert it in database
         elif title is not None:
             self.check_exists_id()
             self.course_name = title
             cur.execute("INSERT INTO ICOURSE VALUES(%s,%s,NULL, NULL)", (self.course_id, self.course_name))
-        self.course_programme = self.download_programme()
 
     def check_exists_id(self):
         cur.execute("SELECT ID FROM ICOURSE")
@@ -190,7 +190,7 @@ class CourseFactory(t.ICourseFactory):
         return OffsiteCourse(id, address, title)
 
     @staticmethod
-    def set_course_to_teacher(course_id, teacher_id):
+    def set_teacher_to_course(course_id, teacher_id):
         cur.execute("SELECT ID FROM ICOURSE")
         res = ' '.join(str(i['ID']) for i in cur.fetchall())
         if str(course_id) not in res:
@@ -221,7 +221,7 @@ try:
     print(f.add_teacher(10, 'Павло'))
     print(f.add_local_course(7, 'Пайтон для роботи з WEB-технологіями', '#406'))
     f.set_programme_to_course(7, [1, 3, 5])
-    f.set_course_to_teacher(7, 10)
+    f.set_teacher_to_course(7, 10)
     print(f.add_offsite_course(8, 'C', 'Австрія'))
     connection.close()
 except Exception as ex:

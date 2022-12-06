@@ -107,7 +107,7 @@ class ICourseFactory(ABC):
 
     @staticmethod
     @abstractmethod
-    def set_course_to_teacher(self, courses):
+    def set_teacher_to_course(self, courses):
         pass
 
     @staticmethod
