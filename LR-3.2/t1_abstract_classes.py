@@ -72,6 +72,10 @@ class ILocalCourse(ABC):
     def lab(self, value):
         pass
 
+    @abstractmethod
+    def __str__(self):
+        pass
+
 
 class IOffsiteCourse(ABC):
     @property

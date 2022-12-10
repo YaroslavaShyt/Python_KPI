@@ -40,9 +40,9 @@ class Teacher(t.ITeacher):
 
     @name.setter
     def name(self, new_n):
-        if not isinstance(new_n, str | None):
+        if not isinstance(new_n, str):
             raise TypeError('Incorrect type for teacher name!')
-        elif new_n is not None and re.search('[^а-щА-ЩЬьЮюЯяЇїІіЄєҐґ\'-]', new_n):
+        elif re.search('[^а-щА-ЩЬьЮюЯяЇїІіЄєҐґ\'-]', new_n):
             raise ValueError('Incorrect value for teacher name!')
         self.__name = new_n
 
@@ -89,9 +89,9 @@ class Course(t.ICourse):
 
     @course_name.setter
     def course_name(self, new_n):
-        if not isinstance(new_n, str | None):
+        if not isinstance(new_n, str):
             raise TypeError('Incorrect type for course name!')
-        elif new_n is not None and re.search(r'[^a-zA-Zа-щА-ЩЬьЮюЯяЇїІіЄєҐґ\s\'-]', new_n):
+        elif re.search(r'[^a-zA-Zа-щА-ЩЬьЮюЯяЇїІіЄєҐґ\s\'-]', new_n):
             raise ValueError('Incorrect value for course name!')
         self.__course_name = new_n
 
@@ -132,9 +132,9 @@ class LocalCourse(Course, t.ILocalCourse):
 
     @lab.setter
     def lab(self, new_l):
-        if not isinstance(new_l, str | None):
+        if not isinstance(new_l, str):
             raise TypeError('Incorrect data type for lab')
-        elif new_l is not None and not new_l:
+        elif not new_l:
             raise ValueError('Incorrect value for lab')
         self.__lab = new_l
 
@@ -164,9 +164,9 @@ class OffsiteCourse(Course, t.IOffsiteCourse):
 
     @address.setter
     def address(self, new_a):
-        if not isinstance(new_a, str | None):
+        if not isinstance(new_a, str):
             raise TypeError('Incorrect data type for address!')
-        elif new_a is not None and re.search(r'[^0-9\sа-щА-ЩЬьЮюЯяЇїІіЄєҐґ]', new_a):
+        elif re.search(r'[^0-9\sа-щА-ЩЬьЮюЯяЇїІіЄєҐґ]', new_a):
             raise ValueError('Incorrect value for address!!')
         self.__address = new_a
 
